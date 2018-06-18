@@ -24,6 +24,7 @@
     "image_sku": "7.4",
     "image_version":"latest",
     "os_disk_size_gb":"64",
+    "ssh_pty": "true",
   
     "vm_size": "Standard_E4S_v3",
 
@@ -40,20 +41,19 @@
       "ReleaseDate": "{{isotime `2006-01-02`}}"
     }
     
-    }],
-    
-    "provisioners": [{
+  }],   
+  "provisioners": [{
       "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'",
       "inline": [
         "/usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync"
       ],
       "inline_shebang": "/bin/sh -x",
-      "type": "shell"
-    }],
-
-    "post-processors": [{
+      "type": "shell",
+      "skip_clean": true
+  }],
+  "post-processors": [{
       "type": "manifest",
       "output": "manifest.json",
       "strip_path": false
-    }]
-  }
+  }]
+}
